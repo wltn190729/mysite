@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>안녕하세요!</h1>
+<textarea cols="100" rows="30" id="html_data"></textarea>
+<br>
+<button id="html_submit">분석</button>
+<div id="html_content"></div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(function () {
+        $("#html_submit").on("click", function () {
+            let foo = {
+                'title': 'html_data',
+                'content': $("#html_data").val()
+            };
+            $.ajax({
+                url : '{% url 'test1:html_dom_ajax' %}',
+                type : 'POST',
+                headers: {
+                    'X-CSRFTOKEN' : '{{ csrf_token }}'
+                },
+                data : JSON.stringify(foo),
+                success : function (data) {
+                    $("#html_content").text(data);
+                },
+                error : function () {
+                    alert("failed..");
+                }
+            });
+        });
+    })
+</script>
+</html>
